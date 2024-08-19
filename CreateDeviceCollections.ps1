@@ -101,7 +101,7 @@ if ($CreateModelCollections -eq $true)
     #Pick Models from those Manufacturers
     foreach ($Manuf in $Manufs)
         {
-        if ($Manuf -match "Len*")
+        if ($Manuf -match "^Len")
             {
 
         $query = @"
@@ -131,11 +131,11 @@ where SMS_G_System_COMPUTER_SYSTEM.Manufacturer = "$Manuf"
         $query = @"
 select DISTINCT SMS_G_System_COMPUTER_SYSTEM.Manufacturer FROM SMS_G_System_COMPUTER_SYSTEM where SMS_G_System_COMPUTER_SYSTEM.Model = "$model"
 "@
-        if ($Model -match "Len*"){$Manufacturer = "Lenovo"}
+        if ($Model -match "^Len"){$Manufacturer = "Lenovo"}
         else{$Manufacturer = (Get-WmiObject -ComputerName $ProviderMachineName -Namespace "ROOT\SMS\site_$SiteCode" -Query $query).Manufacturer}
 
         #Add Product Info to the Model in the Arrary
-        if ($Model -match "Len*")
+        if ($Model -match "^Len")
         {
         $query = @"
 select SMS_G_System_COMPUTER_SYSTEM_PRODUCT.Name FROM SMS_G_System_COMPUTER_SYSTEM_PRODUCT
